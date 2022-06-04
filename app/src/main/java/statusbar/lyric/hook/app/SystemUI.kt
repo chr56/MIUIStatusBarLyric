@@ -266,7 +266,8 @@ class SystemUI : BaseHook() {
         val clockField = if (config.getHook().isNotEmpty()) {
             LogUtils.e("${LogMultiLang.customHook}: " + config.getHook())
             try {
-                param.thisObject.javaClass.getField(config.getHook())
+                XposedHelpers.findField(param.thisObject.javaClass, config.getHook())
+                // param.thisObject.javaClass.getField(config.getHook())
             } catch (e: NoSuchFieldError) {
                 LogUtils.e(config.getHook() + " ${LogMultiLang.fieldFail}: $e\n${Utils.dumpNoSuchFieldError(e)}")
                 null
