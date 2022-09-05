@@ -2,7 +2,7 @@ name: Android CI Dev
 
 on:
   push:
-    branches: [ Dev,new ]
+#    branches: [ Dev,new ]
     paths-ignore:
       - 'README.md'
   pull_request:
