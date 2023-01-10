@@ -1,10 +1,17 @@
 import com.android.build.gradle.internal.api.BaseVariantOutputImpl
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
 }
 
+val isSigningFileExist: Boolean = rootProject.file("signing.properties").exists()
+var signingProperties = Properties()
+if (isSigningFileExist) {
+    signingProperties.load(FileInputStream(rootProject.file("signing.properties")))
+}
 android {
     compileSdk = 33
     val buildTime=System.currentTimeMillis()
@@ -19,11 +26,30 @@ android {
         buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
     }
 
+    signingConfigs {
+        create("release") {
+            if (isSigningFileExist) {
+                storeFile = File(signingProperties["storeFile"] as String)
+                storePassword = signingProperties["storePassword"] as String
+                keyAlias = signingProperties["keyAlias"] as String
+                keyPassword = signingProperties["keyPassword"] as String
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "proguard-log.pro"))
+        }
+        create("custom") {
+            if (isSigningFileExist) signingConfig = signingConfigs.getByName("release")
+
+            // package name
+            applicationIdSuffix = ".custom"
+
+            matchingFallbacks.add("debug")
         }
     }
     compileOptions {
