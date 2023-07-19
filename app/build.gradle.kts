@@ -45,6 +45,11 @@ android {
             isShrinkResources = true
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro", "proguard-log.pro"))
         }
+        create("custom") {
+            // package name
+            applicationIdSuffix = ".custom"
+            matchingFallbacks.add("release")
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
