@@ -12,12 +12,12 @@ if (rootProject.file("local.properties").canRead())
 
 android {
     namespace = "statusbar.lyric"
-    compileSdk = 34
+    compileSdk = 33
     val buildTime = System.currentTimeMillis()
     defaultConfig {
         applicationId = "statusbar.lyric"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 201
         versionName = "6.0.1"
         aaptOptions.cruncherEnabled = false
